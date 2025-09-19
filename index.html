@@ -220,14 +220,33 @@
       entries.forEach(entry => {
         const id = entry.target.getAttribute("id");
         const navLink = document.querySelector(`.nav-link[href="#${id}"]`);
+        
         if (entry.isIntersecting) {
+          // すべてのナビリンクからactiveクラスを削除
           navLinks.forEach(link => link.classList.remove("active"));
-          navLink.classList.add("active");
+          // 現在のセクションに対応するナビリンクにactiveクラスを追加
+          if (navLink) {
+            navLink.classList.add("active");
+          }
         }
       });
-    }, { threshold: 0.5 });
+    }, { 
+      threshold: 0.3,
+      rootMargin: "-80px 0px -50% 0px"
+    });
 
     sections.forEach(section => observer.observe(section));
+
+    // ページ読み込み時に最初のセクションをハイライト
+    window.addEventListener('load', () => {
+      const firstSection = sections[0];
+      if (firstSection) {
+        const firstNavLink = document.querySelector(`.nav-link[href="#${firstSection.getAttribute('id')}"]`);
+        if (firstNavLink) {
+          firstNavLink.classList.add("active");
+        }
+      }
+    });
   </script>
 
 </body>
